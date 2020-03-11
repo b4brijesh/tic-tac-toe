@@ -26,6 +26,7 @@ public class Main {
             switch (gameState) {
                 case -1:
                     System.out.println("Impossible");
+                    gameStillRunning = false;
                     break;
                 case 1:
                     System.out.println(player + " wins");
@@ -41,16 +42,16 @@ public class Main {
                     else
                         player = 'O';
                     System.out.println("Game not finished");
-                    getNextState(player, arr);
+                    while (!getNextState(player, arr));
                     printGameState(arr);
                     break;
             }
         }
     }
 
-    private static void getNextState(char player, char[][] arr) {
+    private static boolean getNextState(char player, char[][] arr) {
         Scanner sc = new Scanner(System.in);
-        int x, y, actualX = -1, actualY = -1;
+        int x = 0, y = 0, actualX = -1, actualY = -1;
         boolean isValid = false;
         while (!isValid) {
             System.out.print("Enter the coordinates: ");
@@ -59,11 +60,11 @@ public class Main {
                 y = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("You should enter numbers!");
-                continue;
+                return false;
             }
             if(x <= 0 || y <= 0 || x > 3 || y > 3) {
                 System.out.println("Coordinates should be from 1 to 3!");
-                continue;
+                return false;
             }
             actualX = 3 - y;
             actualY = x - 1;
@@ -73,6 +74,7 @@ public class Main {
             }
         }
         arr[actualX][actualY] = player;
+        return true;
     }
 
     private static void printGameState(char[][] arr) {
